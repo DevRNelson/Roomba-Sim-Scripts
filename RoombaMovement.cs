@@ -92,7 +92,7 @@ public class RoombaMovement : MonoBehaviour
         }    
 
          // Check if the player presses the "R" key or the DPAD UP key
-        if (Input.GetKeyDown(KeyCode.R) || Input.GetKeyDown(KeyCode.JoystickButton3))
+        if (Input.GetKeyDown(KeyCode.R) || Input.GetKeyDown(KeyCode.JoystickButton6))  //6 is the select button on gamepad
         {
             // Respawn the player at the previously stored positioning
             transform.position = respawnPosition;
