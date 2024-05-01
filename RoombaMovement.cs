@@ -41,10 +41,11 @@ public class RoombaMovement : MonoBehaviour
     private bool rightStickUpPressed = false;
     private bool leftStickDownPressed = false;
     private bool rightStickDownPressed = false;
-    
     public static bool isSprinting = false;
 
-    //hi this is a test comment
+
+
+
     public float currentSpeed;
     public float baseSpeed = 4f;
     public float rotationSpeed = 50f;
@@ -57,7 +58,8 @@ public class RoombaMovement : MonoBehaviour
         // Set initial respawn positions to the player's starting position
         respawnPosition = transform.position;
         respawnRotation = Quaternion.Euler(0, 0, 0); // resets player model's rotation axis to 0 to ensure it flips the model to the default position
-        //PLAYER INPUTS/KEYBINDS
+
+        //PLAYER INPUTS/KEYBINDS VALUE LISTENERS
         moveForwardWAction = CreateInputAction("<Keyboard>/w", ctx => wPressed = ctx.ReadValue<float>() > 0.5f);
         moveForwardIAction = CreateInputAction("<Keyboard>/i", ctx => iPressed = ctx.ReadValue<float>() > 0.5f);
         moveBackwardSAction = CreateInputAction("<Keyboard>/s", ctx => sPressed = ctx.ReadValue<float>() > 0.5f);
@@ -80,6 +82,8 @@ public class RoombaMovement : MonoBehaviour
         
     }
 
+
+    //  Player Control Binds BEGINS
     private void Update()
     {
         if (isSprinting)
@@ -154,10 +158,10 @@ public class RoombaMovement : MonoBehaviour
             transform.Rotate(Vector3.up, rotationSharpSpeed * Time.deltaTime);
         }
     }
+    //  Player Control Binds  End
 
-
-    // RESPAWN CODE BEGIN  THIS SAVES THE INITIAL POSITIONS OF THE  PLAYER WHEN SPAWNED (OR AT LEAST IT SHOULD LMAO!!)
-       public void SetRespawnPosition(Vector3 newPosition)
+    // RESPAWN CODE BEGINS      (THIS SAVES THE INITIAL POSITIONS OF THE  PLAYER WHEN SPAWNED (OR AT LEAST IT SHOULD LMAO!!))
+    public void SetRespawnPosition(Vector3 newPosition)
     {
         
         respawnPosition = newPosition;
