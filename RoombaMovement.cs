@@ -54,6 +54,9 @@ public class RoombaMovement : MonoBehaviour
 
     private void Start()
     {
+        // Set initial respawn positions to the player's starting position
+        respawnPosition = transform.position;
+        respawnRotation = Quaternion.Euler(0, 0, 0); // resets player model's rotation axis to 0 to ensure it flips the model to the default position
         //PLAYER INPUTS/KEYBINDS
         moveForwardWAction = CreateInputAction("<Keyboard>/w", ctx => wPressed = ctx.ReadValue<float>() > 0.5f);
         moveForwardIAction = CreateInputAction("<Keyboard>/i", ctx => iPressed = ctx.ReadValue<float>() > 0.5f);
@@ -74,9 +77,7 @@ public class RoombaMovement : MonoBehaviour
         moveLeftStickDownAction = CreateInputAction("<Gamepad>/leftStick/down", ctx => leftStickDownPressed = ctx.ReadValue<float>() > 0.5f);
         moveRightStickDownAction = CreateInputAction("<Gamepad>/rightStick/down", ctx => rightStickDownPressed = ctx.ReadValue<float>() > 0.5f);
 
-        // Set initial respawn positions to the player's starting position
-        respawnPosition = transform.position;
-        respawnRotation = transform.rotation;
+        
     }
 
     private void Update()
@@ -95,7 +96,7 @@ public class RoombaMovement : MonoBehaviour
         {
             // Respawn the player at the previously stored positioning
             transform.position = respawnPosition;
-            respawnRotation = transform.rotation;
+            transform.rotation = respawnRotation;
         }
         
 
