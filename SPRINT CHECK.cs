@@ -8,7 +8,7 @@ public class SprintingStatusPrinter : MonoBehaviour
     {
         if (RoombaMovement.isSprinting)
         {
-            Debug.Log("Hi World");
+            Debug.Log("THE ROOMBA IS ZOOMING THE ROOMBA IS ZOOMING HOLY SHIT");
         }
     }
 }
