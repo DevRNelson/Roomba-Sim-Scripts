@@ -91,7 +91,7 @@ public class RoombaMovement : MonoBehaviour
             currentSpeed = baseSpeed;
         }    
 
-         // Check if the player presses the "R" key or the DPAD UP key
+         // Check if the player presses the "R" key or the Select/Reset Button on Gamepad
         if (Input.GetKeyDown(KeyCode.R) || Input.GetKeyDown(KeyCode.JoystickButton6))  //6 is the select button on gamepad
         {
             // Respawn the player at the previously stored positioning
