@@ -22,6 +22,7 @@ public class RoombaMovement : MonoBehaviour
     private InputAction moveLeftStickDownAction;
     private InputAction moveRightStickDownAction;
     private InputAction sprintAction;
+    private Vector3 respawnPosition;
 
     private bool wPressed = false;
     private bool iPressed = false;
@@ -52,6 +53,7 @@ public class RoombaMovement : MonoBehaviour
 
     private void Start()
     {
+        //PLAYER INPUTS/KEYBINDS
         moveForwardWAction = CreateInputAction("<Keyboard>/w", ctx => wPressed = ctx.ReadValue<float>() > 0.5f);
         moveForwardIAction = CreateInputAction("<Keyboard>/i", ctx => iPressed = ctx.ReadValue<float>() > 0.5f);
         moveBackwardSAction = CreateInputAction("<Keyboard>/s", ctx => sPressed = ctx.ReadValue<float>() > 0.5f);
@@ -70,6 +72,9 @@ public class RoombaMovement : MonoBehaviour
         moveRightStickUpAction = CreateInputAction("<Gamepad>/rightStick/up", ctx => rightStickUpPressed = ctx.ReadValue<float>() > 0.5f);
         moveLeftStickDownAction = CreateInputAction("<Gamepad>/leftStick/down", ctx => leftStickDownPressed = ctx.ReadValue<float>() > 0.5f);
         moveRightStickDownAction = CreateInputAction("<Gamepad>/rightStick/down", ctx => rightStickDownPressed = ctx.ReadValue<float>() > 0.5f);
+
+        // Set initial respawn position to the player's starting position
+        respawnPosition = transform.position;
     }
 
     private void Update()
@@ -82,6 +87,13 @@ public class RoombaMovement : MonoBehaviour
         {
             currentSpeed = baseSpeed;
         }    
+
+         // Check if the player presses the "R" key
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            // Respawn the player at the stored position
+            transform.position = respawnPosition;
+        }
         
 
         MoveForward();
@@ -137,6 +149,12 @@ public class RoombaMovement : MonoBehaviour
         {
             transform.Rotate(Vector3.up, rotationSharpSpeed * Time.deltaTime);
         }
+    }
+
+       public void SetRespawnPosition(Vector3 newPosition)
+    {
+        // Update the respawn position
+        respawnPosition = newPosition;
     }
 
     private InputAction CreateInputAction(string binding, System.Action<InputAction.CallbackContext> action)

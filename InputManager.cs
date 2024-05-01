@@ -89,6 +89,15 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Respawn"",
+                    ""type"": ""Button"",
+                    ""id"": ""9d7e7cb4-3070-492e-9aa3-f9ab19fc7b89"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -377,6 +386,28 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
                     ""action"": ""Sprint"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dfa7ddae-d7cf-49ff-8c96-54a330cbd9e9"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Respawn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ddfcb8b7-aa4e-4e12-8909-ac4b5a01466f"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Respawn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -392,6 +423,7 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
         m_Newactionmap_MoveSharpLeft = m_Newactionmap.FindAction("MoveSharpLeft", throwIfNotFound: true);
         m_Newactionmap_MoveSharpRight = m_Newactionmap.FindAction("MoveSharpRight", throwIfNotFound: true);
         m_Newactionmap_Sprint = m_Newactionmap.FindAction("Sprint", throwIfNotFound: true);
+        m_Newactionmap_Respawn = m_Newactionmap.FindAction("Respawn", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -460,6 +492,7 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
     private readonly InputAction m_Newactionmap_MoveSharpLeft;
     private readonly InputAction m_Newactionmap_MoveSharpRight;
     private readonly InputAction m_Newactionmap_Sprint;
+    private readonly InputAction m_Newactionmap_Respawn;
     public struct NewactionmapActions
     {
         private @InputManager m_Wrapper;
@@ -471,6 +504,7 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
         public InputAction @MoveSharpLeft => m_Wrapper.m_Newactionmap_MoveSharpLeft;
         public InputAction @MoveSharpRight => m_Wrapper.m_Newactionmap_MoveSharpRight;
         public InputAction @Sprint => m_Wrapper.m_Newactionmap_Sprint;
+        public InputAction @Respawn => m_Wrapper.m_Newactionmap_Respawn;
         public InputActionMap Get() { return m_Wrapper.m_Newactionmap; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -501,6 +535,9 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
             @Sprint.started += instance.OnSprint;
             @Sprint.performed += instance.OnSprint;
             @Sprint.canceled += instance.OnSprint;
+            @Respawn.started += instance.OnRespawn;
+            @Respawn.performed += instance.OnRespawn;
+            @Respawn.canceled += instance.OnRespawn;
         }
 
         private void UnregisterCallbacks(INewactionmapActions instance)
@@ -526,6 +563,9 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
             @Sprint.started -= instance.OnSprint;
             @Sprint.performed -= instance.OnSprint;
             @Sprint.canceled -= instance.OnSprint;
+            @Respawn.started -= instance.OnRespawn;
+            @Respawn.performed -= instance.OnRespawn;
+            @Respawn.canceled -= instance.OnRespawn;
         }
 
         public void RemoveCallbacks(INewactionmapActions instance)
@@ -552,5 +592,6 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
         void OnMoveSharpLeft(InputAction.CallbackContext context);
         void OnMoveSharpRight(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
+        void OnRespawn(InputAction.CallbackContext context);
     }
 }
