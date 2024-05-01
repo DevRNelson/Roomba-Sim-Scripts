@@ -23,6 +23,7 @@ public class RoombaMovement : MonoBehaviour
     private InputAction moveRightStickDownAction;
     private InputAction sprintAction;
     private Vector3 respawnPosition;
+    private Quaternion respawnRotation;
 
     private bool wPressed = false;
     private bool iPressed = false;
@@ -73,8 +74,9 @@ public class RoombaMovement : MonoBehaviour
         moveLeftStickDownAction = CreateInputAction("<Gamepad>/leftStick/down", ctx => leftStickDownPressed = ctx.ReadValue<float>() > 0.5f);
         moveRightStickDownAction = CreateInputAction("<Gamepad>/rightStick/down", ctx => rightStickDownPressed = ctx.ReadValue<float>() > 0.5f);
 
-        // Set initial respawn position to the player's starting position
+        // Set initial respawn positions to the player's starting position
         respawnPosition = transform.position;
+        respawnRotation = transform.rotation;
     }
 
     private void Update()
@@ -88,11 +90,12 @@ public class RoombaMovement : MonoBehaviour
             currentSpeed = baseSpeed;
         }    
 
-         // Check if the player presses the "R" key
-        if (Input.GetKeyDown(KeyCode.R))
+         // Check if the player presses the "R" key or the DPAD UP key
+        if (Input.GetKeyDown(KeyCode.R) || Input.GetKeyDown(KeyCode.JoystickButton3))
         {
-            // Respawn the player at the stored position
+            // Respawn the player at the previously stored positioning
             transform.position = respawnPosition;
+            respawnRotation = transform.rotation;
         }
         
 
@@ -151,11 +154,21 @@ public class RoombaMovement : MonoBehaviour
         }
     }
 
+
+    // RESPAWN CODE BEGIN 
        public void SetRespawnPosition(Vector3 newPosition)
     {
-        // Update the respawn position
+        
         respawnPosition = newPosition;
     }
+
+     public void SetRespawnRotation(Quaternion newRotation)
+    {
+        
+        respawnRotation = newRotation;
+    }
+
+    // RESPAWN CODE end
 
     private InputAction CreateInputAction(string binding, System.Action<InputAction.CallbackContext> action)
     {
