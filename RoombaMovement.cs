@@ -156,7 +156,7 @@ public class RoombaMovement : MonoBehaviour
     }
 
 
-    // RESPAWN CODE BEGIN 
+    // RESPAWN CODE BEGIN  THIS SAVES THE INITIAL POSITIONS OF THE  PLAYER WHEN SPAWNED (OR AT LEAST IT SHOULD LMAO!!)
        public void SetRespawnPosition(Vector3 newPosition)
     {
         
