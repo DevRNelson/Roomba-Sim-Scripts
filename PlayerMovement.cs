@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class RoombaMovement : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
     private InputAction moveForwardWAction;
     private InputAction moveForwardIAction;

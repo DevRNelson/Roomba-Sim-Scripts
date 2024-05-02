@@ -6,7 +6,7 @@ public class SprintingStatusPrinter : MonoBehaviour
 {
     void Update()
     {
-        if (RoombaMovement.isSprinting)
+        if (PlayerMovement.isSprinting)
         {
             Debug.Log("THE ROOMBA IS ZOOMING");
         }
