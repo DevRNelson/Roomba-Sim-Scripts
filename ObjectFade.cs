@@ -7,21 +7,22 @@ public class ObjectFade : MonoBehaviour
     public float fadeSpeed, fadeAmount;
     float originalOpacity;
 
-    Renderer renderer;
-    Material Mat;
-    public bool Defade = false;
+    Renderer rend;
+    Material mat;
+    public bool Fade = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        Mat = GetComponent<Renderer>().material; // Changed from GetComponent<Material>() to GetComponent<Renderer>().material
-        originalOpacity = Mat.color.a;
+        rend = GetComponent<Renderer>();
+        mat = rend.material;
+        originalOpacity = mat.color.a;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Defade)
+        if (Fade)
             FadeNow();
         else
             ResetFade();
@@ -29,17 +30,17 @@ public class ObjectFade : MonoBehaviour
 
     void FadeNow()
     {
-        Color currentColor = Mat.color;
+        Color currentColor = mat.color;
         Color smoothColor = new Color(currentColor.r, currentColor.g, currentColor.b,
-            Mathf.Lerp(currentColor.a, fadeAmount, fadeSpeed));
-        Mat.color = smoothColor;
+            Mathf.Lerp(currentColor.a, fadeAmount, fadeSpeed * Time.deltaTime));
+        mat.color = smoothColor;
     }
 
     void ResetFade()
     {
-        Color currentColor = Mat.color;
+        Color currentColor = mat.color;
         Color smoothColor = new Color(currentColor.r, currentColor.g, currentColor.b,
-            Mathf.Lerp(currentColor.a, originalOpacity, fadeSpeed));
-        Mat.color = smoothColor;
+            Mathf.Lerp(currentColor.a, originalOpacity, fadeSpeed * Time.deltaTime));
+        mat.color = smoothColor;
     }
 }

@@ -17,7 +17,7 @@ public class PlayerCollision : MonoBehaviour
 
     private bool charging = false;
     private bool onCooldown = false;
-    private float currentChargeTime = 0f;
+ 
 
     void Start()
     {
