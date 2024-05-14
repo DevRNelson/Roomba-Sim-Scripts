@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TimerBattery : MonoBehaviour
 {
+    [SerializeField] TMP_Text timerText;
     PlayerMovement playerMovement;
     [SerializeField] GameObject player;
 
@@ -18,17 +21,22 @@ public class TimerBattery : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         if (PlayerMovement.isSprinting == true)
         {
-            Sprintbatloss();
+            StopCoroutine(Timer());
+            StartCoroutine(Sprintbatloss());
+            timerText.color = Color.red;
             Debug.Log("energy loss");
         }
-
+        else if (PlayerMovement.isSprinting == false)
+       {
+            StopCoroutine(Sprintbatloss());
+            timerText.color = Color.white;
+       }
     }
 
     //Timer coroutine
-    IEnumerator Timer()
+    public static IEnumerator Timer()
     {
         while (GlobalVariables.currentTime > 0)
         {
@@ -36,11 +44,15 @@ public class TimerBattery : MonoBehaviour
             GlobalVariables.currentTime--;
         }
     }
-    
+
     // Method to handle sprint battery loss
     IEnumerator Sprintbatloss()
     {
-        yield return new WaitForSeconds(6);
-        GlobalVariables.currentTime -= GlobalVariables.sprintLoss;
+        while (PlayerMovement.isSprinting)
+        {
+            yield return new WaitForSeconds(3);
+            GlobalVariables.currentTime -= GlobalVariables.sprintLoss;
+            yield return null;
+        }
     }
 }

@@ -21,7 +21,7 @@ public class PlayerMovement : MonoBehaviour
     private InputAction moveRightStickUpAction;
     private InputAction moveLeftStickDownAction;
     private InputAction moveRightStickDownAction;
-    private InputAction sprintAction;
+    public static InputAction sprintAction;
     private Vector3 respawnPosition;
     private Quaternion respawnRotation;
 
@@ -42,8 +42,6 @@ public class PlayerMovement : MonoBehaviour
     private bool leftStickDownPressed = false;
     private bool rightStickDownPressed = false;
     public static bool isSprinting = false;
-
-
 
 
     public float currentSpeed;
@@ -79,7 +77,7 @@ public class PlayerMovement : MonoBehaviour
         moveLeftStickDownAction = CreateInputAction("<Gamepad>/leftStick/down", ctx => leftStickDownPressed = ctx.ReadValue<float>() > 0.5f);
         moveRightStickDownAction = CreateInputAction("<Gamepad>/rightStick/down", ctx => rightStickDownPressed = ctx.ReadValue<float>() > 0.5f);
 
-        
+
     }
 
 
@@ -93,69 +91,87 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             currentSpeed = baseSpeed;
-        }    
+        }
 
-         // Check if the player presses the "R" key or the Select/Reset Button on Gamepad
+        // Check if the player presses the "R" key or the Select/Reset Button on Gamepad
         if (Input.GetKeyDown(KeyCode.R) || Input.GetKeyDown(KeyCode.JoystickButton6))  //6 is the select button on gamepad
         {
             // Respawn the player at the previously stored positioning
             transform.position = respawnPosition;
             transform.rotation = respawnRotation;
         }
-        
+
 
         MoveForward();
         MoveBackward();
         MoveLeft();
         MoveRight();
-        MoveSharpLeft(); 
+        MoveSharpLeft();
         MoveSharpRight();
     }
 
     private void MoveForward()
     {
-        if ((wPressed && iPressed) || (leftStickUpPressed && rightStickUpPressed))
+        if (GlobalVariables.canMove == true)
         {
-            transform.Translate(Vector3.forward * currentSpeed * Time.deltaTime);
+            if ((wPressed && iPressed) || (leftStickUpPressed && rightStickUpPressed))
+            {
+                transform.Translate(Vector3.forward * currentSpeed * Time.deltaTime);
+            }
         }
     }
 
-    private void MoveBackward() 
+    private void MoveBackward()
     {
-        if ((sPressed && kPressed) || (leftStickDownPressed && rightStickDownPressed))
+        if (GlobalVariables.canMove == true)
         {
-            transform.Translate(-Vector3.forward * currentSpeed * Time.deltaTime);
+            if ((sPressed && kPressed) || (leftStickDownPressed && rightStickDownPressed))
+            {
+                transform.Translate(-Vector3.forward * currentSpeed * Time.deltaTime);
+            }
         }
     }
 
     private void MoveLeft()
     {
-        if ((aPressed && jPressed) || (leftStickLeftPressed && rightStickLeftPressed))
+        if (GlobalVariables.canMove == true)
         {
-            transform.Rotate(Vector3.up, -rotationSpeed * Time.deltaTime);
+            if ((aPressed && jPressed) || (leftStickLeftPressed && rightStickLeftPressed))
+            {
+                transform.Rotate(Vector3.up, -rotationSpeed * Time.deltaTime);
+            }
         }
     }
 
     private void MoveRight()
     {
-        if ((dPressed && lPressed) || (leftStickRightPressed && rightStickRightPressed))
+        if (GlobalVariables.canMove == true)
         {
-            transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime);
+            if ((dPressed && lPressed) || (leftStickRightPressed && rightStickRightPressed))
+            {
+                transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime);
+            }
         }
     }
     private void MoveSharpLeft()
     {
-        if ((sPressed && iPressed) || (leftStickDownPressed && rightStickUpPressed))
+        if (GlobalVariables.canMove == true)
         {
-            transform.Rotate(Vector3.up, -rotationSharpSpeed * Time.deltaTime);
+            if ((sPressed && iPressed) || (leftStickDownPressed && rightStickUpPressed))
+            {
+                transform.Rotate(Vector3.up, -rotationSharpSpeed * Time.deltaTime);
+            }
         }
     }
 
     private void MoveSharpRight()
     {
-        if ((wPressed && kPressed) || (leftStickUpPressed && rightStickDownPressed))
+        if (GlobalVariables.canMove == true)
         {
-            transform.Rotate(Vector3.up, rotationSharpSpeed * Time.deltaTime);
+            if ((wPressed && kPressed) || (leftStickUpPressed && rightStickDownPressed))
+            {
+                transform.Rotate(Vector3.up, rotationSharpSpeed * Time.deltaTime);
+            }
         }
     }
     //  Player Control Binds  End
@@ -163,13 +179,13 @@ public class PlayerMovement : MonoBehaviour
     // RESPAWN CODE BEGINS      (THIS SAVES THE INITIAL POSITIONS OF THE  PLAYER WHEN SPAWNED (OR AT LEAST IT SHOULD LMAO!!))
     public void SetRespawnPosition(Vector3 newPosition)
     {
-        
+
         respawnPosition = newPosition;
     }
 
-     public void SetRespawnRotation(Quaternion newRotation)
+    public void SetRespawnRotation(Quaternion newRotation)
     {
-        
+
         respawnRotation = newRotation;
     }
 
