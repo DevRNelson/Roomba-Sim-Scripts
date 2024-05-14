@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -25,7 +24,11 @@ public class UI : MonoBehaviour
 
     public void SetTextboxText()
     {
-        timerText.text = GlobalVariables.currentTime.ToString();
+        float displayTime = Mathf.Max(0, GlobalVariables.currentTime); // Ensure currentTime never goes below 0
+        int minutes = Mathf.FloorToInt(displayTime / 60);
+        int seconds = Mathf.FloorToInt(displayTime % 60);
+        string timeString = String.Format("{0:00}:{1:00}", minutes, seconds);// Displays the Time in this formate Minutes:Seconds
+        timerText.text = timeString;  
     }
 
     public static void SetCleanliness()
@@ -35,6 +38,6 @@ public class UI : MonoBehaviour
 
     public static void UpdateCleanlinessSlider(int value)
     {
-       // _cleanSlider.value += value;
+        // _cleanSlider.value += value;
     }
 }
