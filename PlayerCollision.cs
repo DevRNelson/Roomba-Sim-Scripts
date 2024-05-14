@@ -1,5 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class PlayerCollision : MonoBehaviour
@@ -15,44 +15,66 @@ public class PlayerCollision : MonoBehaviour
     public float cooldownTime;
     public bool dockActive = true;
 
-    // Start is called before the first frame update
+    private bool charging = false;
+    private bool onCooldown = false;
+    private float currentChargeTime = 0f;
+
     void Start()
     {
-        bool docked = GlobalVariables.docked;
+        playerMovement = GetComponent<PlayerMovement>(); // Cache PlayerMovement component
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (dockActive == true)
+        if (dockActive && !onCooldown)//detects if the device is docked and then begins charging 
         {
-            if (GlobalVariables.docked == true)
+            if (GlobalVariables.docked && !charging)
             {
                 GlobalVariables.canMove = false;
-                StopCoroutine(TimerBattery.Timer());
-                for (float i = 0; i < chargeTime; i++)
-                {
-                    chargeValue =+ GlobalVariables.currentTime;
-                    Debug.Log("charging");
-                }
-                //StartCoroutine(dockCharge());
-                GlobalVariables.canMove = true;
-                StartCoroutine(dockCooldown());
-                StartCoroutine(TimerBattery.Timer());
-                Debug.Log("on charger");
+                charging = true;
+
+                StartCoroutine(ChargeForTenSeconds());
             }
         }
     }
 
-    void OnTriggerEnter(Collider Player)
+    IEnumerator ChargeForTenSeconds() //self explanatory name honestly
     {
-        if (Player.gameObject.CompareTag("Dock"))
+        float elapsedTime = 0f;
+
+        while (elapsedTime < 10f) // Charge for ten seconds
+        {
+            GlobalVariables.currentTime += chargeValue;
+            Debug.Log("Charging...");
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        charging = false;
+        GlobalVariables.docked = false;
+        GlobalVariables.canMove = true;
+        StartCoroutine(StartCooldown()); // Start the cooldown
+        Debug.Log("Finished charging");
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Dock") && !onCooldown)
         {
             GlobalVariables.docked = true;
+            Debug.Log("Docked");
         }
     }
 
-    //Improved physics
+    IEnumerator StartCooldown()
+    {
+        onCooldown = true;
+        yield return new WaitForSeconds(cooldownTime);
+        onCooldown = false;
+        Debug.Log("Cooldown finished");
+    }
+
+     //Improved physics
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.rigidbody != null && collision.gameObject != gameObject)
@@ -62,19 +84,5 @@ public class PlayerCollision : MonoBehaviour
             collision.rigidbody.AddForce(impactDirection.normalized * horizontalForceMagnitude, ForceMode.Impulse);
             collision.rigidbody.AddForce(Vector3.up * verticalForceMagnitude, ForceMode.Impulse);
         }
-    }
-
-    IEnumerator dockCharge()
-    {
-        chargeValue += GlobalVariables.currentTime;
-        yield return new WaitForSeconds(chargeTime);
-        Debug.Log("charging");
-    }
-
-    IEnumerator dockCooldown ()
-    {
-       yield return new WaitForSeconds(cooldownTime);
-       dockActive = true;
-       Debug.Log("dock started cooldown");
     }
 }
