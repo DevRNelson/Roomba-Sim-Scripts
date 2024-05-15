@@ -11,7 +11,7 @@ public class TimerBattery : MonoBehaviour
     
     private float updateInterval = 1f;  
     
-    private float sprintMultiplier = 1.5f; 
+    private float sprintMultiplier = 1.2f; 
 
    
     void Start()
@@ -51,9 +51,8 @@ public class TimerBattery : MonoBehaviour
     {
         while (PlayerMovement.isSprinting && GlobalVariables.currentTime > 0)
         {
-            elapsedTime += Time.deltaTime; // Accumulate time passed
-
-            // Calculate the deduction amount based on sprint loss duration, elapsed time, and multiplier
+            elapsedTime += Time.deltaTime;  
+ 
             float deduction = (float)GlobalVariables.sprintLoss.TotalSeconds * elapsedTime * sprintMultiplier;
 
             // Deduct the calculated amount from the current time
