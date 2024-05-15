@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 
 public static class GlobalVariables
 {
@@ -8,6 +10,6 @@ public static class GlobalVariables
     public static float currentTime;
     public static float batterycharge;
     public static bool docked;
-    public static float sprintLoss = 2f;
+    public static TimeSpan sprintLoss = TimeSpan.FromSeconds(0.005);
     public static bool canMove = true;
 }

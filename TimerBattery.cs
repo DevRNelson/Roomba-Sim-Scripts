@@ -30,7 +30,7 @@ public class TimerBattery : MonoBehaviour
         }
         else if (PlayerMovement.isSprinting == false)
        {
-            StopCoroutine(Sprintbatloss());
+            StartCoroutine(Sprintbatloss()); 
             timerText.color = Color.white;
        }
     }
@@ -45,14 +45,29 @@ public class TimerBattery : MonoBehaviour
         }
     }
 
-    // Method to handle sprint battery loss
+    
+    // Coroutine to handle sprint battery loss
     IEnumerator Sprintbatloss()
     {
-        while (PlayerMovement.isSprinting)
+        float elapsedTime = 0f; // Track elapsed time
+        float updateInterval = 1f; // Interval in seconds to update the deduction
+        float sprintLossSeconds = (float)GlobalVariables.sprintLoss.TotalSeconds; // Convert sprint loss duration to seconds
+
+        while (PlayerMovement.isSprinting && GlobalVariables.currentTime > 0)
         {
-            yield return new WaitForSeconds(3);
-            GlobalVariables.currentTime -= GlobalVariables.sprintLoss;
+            elapsedTime += Time.deltaTime; // Accumulate time passed
+
+            // Calculate the deduction amount based on sprint loss duration and elapsed time
+            float deduction = sprintLossSeconds * elapsedTime * 1.5f; // Speed up deduction
+
+            // Deduct the calculated amount from the current time
+            GlobalVariables.currentTime -= deduction * Mathf.Floor(elapsedTime / updateInterval);
+
+            // Reset elapsed time for the next interval using modulus
+            elapsedTime %= updateInterval;
+
             yield return null;
         }
     }
+
 }

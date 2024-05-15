@@ -38,24 +38,33 @@ public class PlayerCollision : MonoBehaviour
         }
     }
 
-    IEnumerator ChargeForTenSeconds() //self explanatory name honestly
-    {
-        float elapsedTime = 0f;
+IEnumerator ChargeForTenSeconds()
+{
+    float elapsedTime = 0f;
+    float chargePerSecond = 6f; // for every single digit value increase, this will add 10 seconds to the timer
+    bool isCharging = true;
 
-        while (elapsedTime < 10f) // Charge for ten seconds
+    while (elapsedTime < 10f) // Charge for ten seconds
+    {
+        if (!isCharging)
         {
-            GlobalVariables.currentTime += chargeValue;
+            yield return new WaitForEndOfFrame(); // Wait for the end of the frame without charging
+        }
+        else
+        {
+            GlobalVariables.currentTime += chargePerSecond * Time.deltaTime;
             Debug.Log("Charging...");
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-
-        charging = false;
-        GlobalVariables.docked = false;
-        GlobalVariables.canMove = true;
-        StartCoroutine(StartCooldown()); // Start the cooldown
-        Debug.Log("Finished charging");
     }
+
+    charging = false;
+    GlobalVariables.docked = false;
+    GlobalVariables.canMove = true;
+    StartCoroutine(StartCooldown()); // Start the cooldown
+    Debug.Log("Finished charging");
+}
 
     void OnTriggerEnter(Collider other)
     {
