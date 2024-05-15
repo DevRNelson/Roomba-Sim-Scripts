@@ -10,6 +10,5 @@ public static class GlobalVariables
     public static float currentTime;
     public static float batterycharge;
     public static bool docked;
-    public static TimeSpan sprintLoss = TimeSpan.FromSeconds(0.005);
     public static bool canMove = true;
 }

@@ -1,64 +1,60 @@
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class TimerBattery : MonoBehaviour
 {
-    [SerializeField] TMP_Text timerText;
-    PlayerMovement playerMovement;
-    [SerializeField] GameObject player;
+    [SerializeField] private TMP_Text timerText;
+    [SerializeField] private GameObject player;
 
-    // Start is called before the first frame update
+    private float elapsedTime = 0f;  
+    
+    private float updateInterval = 1f;  
+    
+    private float sprintMultiplier = 1.5f; 
+
+   
     void Start()
     {
-        float startTime = GlobalVariables.startTime;
-        GlobalVariables.currentTime = startTime;
-        StartCoroutine(Timer());
+        GlobalVariables.currentTime = GlobalVariables.startTime; // Initialize current time
+        StartCoroutine(Timer()); // Start the timer coroutine
     }
 
-    // Update is called once per frame
+   
     void Update()
     {
-        if (PlayerMovement.isSprinting == true)
+        if (PlayerMovement.isSprinting)
         {
-            StopCoroutine(Timer());
-            StartCoroutine(Sprintbatloss());
-            timerText.color = Color.red;
-            Debug.Log("energy loss");
+            StopCoroutine(SprintBatteryLoss()); // Stop the previous coroutine
+            StartCoroutine(SprintBatteryLoss()); // Start sprint battery loss coroutine
+            timerText.color = Color.red; // Change timer text color to red
         }
-        else if (PlayerMovement.isSprinting == false)
-       {
-            StartCoroutine(Sprintbatloss()); 
-            timerText.color = Color.white;
-       }
+        else
+        {
+            StartCoroutine(SprintBatteryLoss()); // Start sprint battery loss coroutine
+            timerText.color = Color.white; // Change timer text color back to white
+        }
     }
 
-    //Timer coroutine
-    public static IEnumerator Timer()
+   
+    private IEnumerator Timer()
     {
         while (GlobalVariables.currentTime > 0)
         {
-            yield return new WaitForSeconds(1);
-            GlobalVariables.currentTime--;
+            yield return new WaitForSeconds(1); // Wait for 1 second
+            GlobalVariables.currentTime--; // Decrease current time
         }
     }
 
-    
     // Coroutine to handle sprint battery loss
-    IEnumerator Sprintbatloss()
+    private IEnumerator SprintBatteryLoss()
     {
-        float elapsedTime = 0f; // Track elapsed time
-        float updateInterval = 1f; // Interval in seconds to update the deduction
-        float sprintLossSeconds = (float)GlobalVariables.sprintLoss.TotalSeconds; // Convert sprint loss duration to seconds
-
         while (PlayerMovement.isSprinting && GlobalVariables.currentTime > 0)
         {
             elapsedTime += Time.deltaTime; // Accumulate time passed
 
-            // Calculate the deduction amount based on sprint loss duration and elapsed time
-            float deduction = sprintLossSeconds * elapsedTime * 1.5f; // Speed up deduction
+            // Calculate the deduction amount based on sprint loss duration, elapsed time, and multiplier
+            float deduction = (float)GlobalVariables.sprintLoss.TotalSeconds * elapsedTime * sprintMultiplier;
 
             // Deduct the calculated amount from the current time
             GlobalVariables.currentTime -= deduction * Mathf.Floor(elapsedTime / updateInterval);
@@ -66,8 +62,7 @@ public class TimerBattery : MonoBehaviour
             // Reset elapsed time for the next interval using modulus
             elapsedTime %= updateInterval;
 
-            yield return null;
+            yield return null;  
         }
     }
-
 }
