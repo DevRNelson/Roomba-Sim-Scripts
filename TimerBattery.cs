@@ -6,14 +6,7 @@ public class TimerBattery : MonoBehaviour
 {
     [SerializeField] private TMP_Text timerText;
     [SerializeField] private GameObject player;
-
-    private float elapsedTime = 0f;  
-    
-    private float updateInterval = 1f;  
-    
-    private float sprintMultiplier = 1.2f; 
-
-   
+  
     void Start()
     {
         GlobalVariables.currentTime = GlobalVariables.startTime; // Initialize current time
