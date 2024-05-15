@@ -27,9 +27,15 @@ public class UI : MonoBehaviour
         float displayTime = Mathf.Max(0, GlobalVariables.currentTime); // Ensure currentTime never goes below 0
         int minutes = Mathf.FloorToInt(displayTime / 60);
         int seconds = Mathf.FloorToInt(displayTime % 60);
-        string timeString = String.Format("{0:00}:{1:00}", minutes, seconds);// Displays the Time in this formate Minutes:Seconds
-        timerText.text = timeString;  
+        string timeString = string.Format("{0:00}:{1:00}", minutes, seconds); // Display the time in the format Minutes:Seconds
+        UpdateTimerText(timeString);
     }
+
+    private void UpdateTimerText(string timeString)
+    {
+        timerText.text = timeString; // Update the timer text with the formatted time string
+    }
+
 
     public static void SetCleanliness()
     {

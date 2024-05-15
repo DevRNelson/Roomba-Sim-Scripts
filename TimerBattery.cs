@@ -46,22 +46,21 @@ public class TimerBattery : MonoBehaviour
         }
     }
 
-    // Coroutine to handle sprint battery loss
     private IEnumerator SprintBatteryLoss()
     {
+        float deductionPerSecond = 0.001f; // Constant deduction rate of 0.5 seconds per second
+        float elapsedTime = 0f;
+
         while (PlayerMovement.isSprinting && GlobalVariables.currentTime > 0)
         {
-            elapsedTime += Time.deltaTime;  
- 
-            float deduction = (float)GlobalVariables.sprintLoss.TotalSeconds * elapsedTime * sprintMultiplier;
+            elapsedTime += Time.deltaTime;
 
-            // Deduct the calculated amount from the current time
-            GlobalVariables.currentTime -= deduction * Mathf.Floor(elapsedTime / updateInterval);
+            float timeToDeduct = deductionPerSecond * Time.deltaTime;
 
-            // Reset elapsed time for the next interval using modulus
-            elapsedTime %= updateInterval;
+            GlobalVariables.currentTime -= timeToDeduct;
 
-            yield return null;  
+            yield return null;
         }
     }
+
 }
