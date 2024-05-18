@@ -29,21 +29,24 @@ public class DirtnessManager : MonoBehaviour
     {
         if (!processedObjects.Contains(other.gameObject))
         {
-            if (other.gameObject.CompareTag("Dirt"))
+            switch (other.gameObject.tag)
             {
-                Destroy(other.gameObject);
-                dirtCurrent -= dirtValue;
-                UI.UpdateCleanlinessSlider(dirtValue);
-                Debug.Log("dirt value subtracted");
-            }
-            if (other.gameObject.CompareTag("Trash"))
-            {
-                Destroy(other.gameObject);
-                dirtCurrent -= trashValue;
-                UI.UpdateCleanlinessSlider(trashValue);
-                Debug.Log("trash value subtracted");
+                case "Dirt":
+                    Destroy(other.gameObject);
+                    dirtCurrent -= dirtValue;
+                    UI.UpdateCleanlinessSlider(dirtValue);
+                    Debug.Log("dirt value subtracted");
+                    break;
+
+                case "Trash":
+                    Destroy(other.gameObject);
+                    dirtCurrent -= trashValue;
+                    UI.UpdateCleanlinessSlider(trashValue);
+                    Debug.Log("trash value subtracted");
+                    break;
             }
         }
         processedObjects.Add(other.gameObject);
     }
+
 }
