@@ -14,20 +14,22 @@ public class TimerBattery : MonoBehaviour
     }
 
    
-    void Update()
+ void Update()
+{
+    switch (PlayerMovement.isSprinting)
     {
-        if (PlayerMovement.isSprinting)
-        {
+        case true:
             StopCoroutine(SprintBatteryLoss()); // Stop the previous coroutine
             StartCoroutine(SprintBatteryLoss()); // Start sprint battery loss coroutine
             timerText.color = Color.red; // Change timer text color to red
-        }
-        else
-        {
+            break;
+        case false:
             StartCoroutine(SprintBatteryLoss()); // Start sprint battery loss coroutine
             timerText.color = Color.white; // Change timer text color back to white
-        }
+            break;
     }
+}
+
 
    
     private IEnumerator Timer()
@@ -41,7 +43,7 @@ public class TimerBattery : MonoBehaviour
 
     private IEnumerator SprintBatteryLoss()
     {
-        float deductionPerSecond = 0.001f; // Constant deduction rate of 0.001f (I believe the higher values are a bit too fast with how fast it drains, i feel this  and similar ranges to it is more reasonable for a level )
+        float deductionPerSecond = 0.002f; // Constant deduction rate of 0.001f (I believe the higher values are a bit too fast with how fast it drains, i feel this  and similar ranges to it is more reasonable for a level )
         float elapsedTime = 0f;
 
         while (PlayerMovement.isSprinting && GlobalVariables.currentTime > 0)
