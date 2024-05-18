@@ -18,7 +18,9 @@ public class DirtnessManager : MonoBehaviour
     {
         //find all dirt and trash in scene
         dirtList = new List<GameObject>();
-        dirtList.AddRange(GameObject.FindGameObjectsWithTag("Dirt")); dirtList.AddRange(GameObject.FindGameObjectsWithTag("Trash"));
+        dirtList.AddRange(GameObject.FindGameObjectsWithTag("Dirt")); 
+        dirtList.AddRange(GameObject.FindGameObjectsWithTag("Trash"));
+        
         //calculate start dirt value
         dirtStart = dirtList.Count * dirtValue + dirtList.Count * trashValue;
 
@@ -34,19 +36,18 @@ public class DirtnessManager : MonoBehaviour
                 case "Dirt":
                     Destroy(other.gameObject);
                     dirtCurrent -= dirtValue;
-                    UI.UpdateCleanlinessSlider(dirtValue);
+                    UI.UpdateCleanliness(dirtCurrent / dirtStart); // Update cleanliness based on current and maximum values
                     Debug.Log("dirt value subtracted");
                     break;
 
                 case "Trash":
                     Destroy(other.gameObject);
                     dirtCurrent -= trashValue;
-                    UI.UpdateCleanlinessSlider(trashValue);
+                    UI.UpdateCleanliness(dirtCurrent / dirtStart); // Update cleanliness based on current and maximum values
                     Debug.Log("trash value subtracted");
                     break;
             }
         }
         processedObjects.Add(other.gameObject);
     }
-
 }
