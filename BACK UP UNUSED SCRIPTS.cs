@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 //THIS UI SCRIPT EDIT TIES THE UI OF A BAR WITH A FILL AMOUNT TO THE TIME LEFT FOR E.G  A BATTERY BAR UI DISPLAY
+
+//public static float maxTime = 60.0f; //1 minute max time   GLOBAL VARIABLE FOR THIS CODE'S MAX TIME
 public class TimerScript : MonoBehaviour
 {
     public Image cleanlinessBar;
