@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -12,7 +11,6 @@ public class UI : MonoBehaviour
     void Start()
     {
         SetTextboxText();
-        // Set the initial cleanliness value based on the maximum calculated value from DirtnessManager
         cleanlinessBar.fillAmount = 1f; // Assuming initial cleanliness is full
     }
 
@@ -24,16 +22,33 @@ public class UI : MonoBehaviour
 
     public void SetTextboxText()
     {
-        float displayTime = Mathf.Max(0, GlobalVariables.currentTime); // Ensure currentTime never goes below 0
+        float displayTime = Mathf.Max(0, GlobalVariables.currentTime);
         int minutes = Mathf.FloorToInt(displayTime / 60);
         int seconds = Mathf.FloorToInt(displayTime % 60);
-        string timeString = string.Format("{0:00}:{1:00}", minutes, seconds); // Display the time in the format Minutes:Seconds
+        string timeString = string.Format("{0:00}:{1:00}", minutes, seconds);
         UpdateTimerText(timeString);
     }
 
     private void UpdateTimerText(string timeString)
     {
-        timerText.text = timeString; // Update the timer text with the formatted time string
+        timerText.text = timeString;
     }
-  
+
+    public static void UpdateCleanliness(float cleanlinessPercentage)
+    {
+        UI uiInstance = FindObjectOfType<UI>();
+        if (uiInstance != null)
+        {
+            uiInstance.cleanlinessBar.fillAmount = cleanlinessPercentage;
+        }
+    }
+
+    void SetInitialCleanliness()
+    {
+        DirtnessManager dirtnessManager = FindObjectOfType<DirtnessManager>();
+        if (dirtnessManager != null)
+        {
+            UpdateCleanliness(1f); // Assuming initial cleanliness is full
+        }
+    }
 }

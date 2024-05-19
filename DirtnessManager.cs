@@ -10,20 +10,19 @@ public class DirtnessManager : MonoBehaviour
     public static int dirtStart = 1;
 
     public List<GameObject> dirtList;
-    string[] dirtColor = new string[] { "red", "yellow", "blue", "orange", "magenta", "green", "purple", "black" };
     private List<GameObject> processedObjects = new List<GameObject>();
 
     // Start is called before the first frame update
     void Start()
     {
-        //find all dirt and trash in scene
+        // Find all dirt and trash in the scene
         dirtList = new List<GameObject>();
-        dirtList.AddRange(GameObject.FindGameObjectsWithTag("Dirt")); 
+        dirtList.AddRange(GameObject.FindGameObjectsWithTag("Dirt"));
         dirtList.AddRange(GameObject.FindGameObjectsWithTag("Trash"));
         
-        //calculate start dirt value
+        // Calculate start dirt value
         dirtStart = dirtList.Count * dirtValue + dirtList.Count * trashValue;
-
+        
         dirtCurrent = dirtStart;
     }
 
@@ -36,18 +35,24 @@ public class DirtnessManager : MonoBehaviour
                 case "Dirt":
                     Destroy(other.gameObject);
                     dirtCurrent -= dirtValue;
-                    UI.UpdateCleanliness(dirtCurrent / dirtStart); // Update cleanliness based on current and maximum values
-                    Debug.Log("dirt value subtracted");
+                    UpdateCleanliness();
+                    Debug.Log("Dirt value subtracted");
                     break;
 
                 case "Trash":
                     Destroy(other.gameObject);
                     dirtCurrent -= trashValue;
-                    UI.UpdateCleanliness(dirtCurrent / dirtStart); // Update cleanliness based on current and maximum values
-                    Debug.Log("trash value subtracted");
+                    UpdateCleanliness();
+                    Debug.Log("Trash value subtracted");
                     break;
             }
         }
         processedObjects.Add(other.gameObject);
+    }
+
+    void UpdateCleanliness()
+    {
+        float cleanlinessPercentage = (float)dirtCurrent / dirtStart;
+        UI.UpdateCleanliness(cleanlinessPercentage);
     }
 }
