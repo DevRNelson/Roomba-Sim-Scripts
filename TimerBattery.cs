@@ -6,33 +6,29 @@ public class TimerBattery : MonoBehaviour
 {
     [SerializeField] private TMP_Text timerText;
     [SerializeField] private GameObject player;
-  
+
     void Start()
     {
         GlobalVariables.currentTime = GlobalVariables.startTime; // Initialize current time
         StartCoroutine(Timer()); // Start the timer coroutine
     }
 
-   
- void Update()
-{
-    switch (PlayerMovement.isSprinting)
+    void Update()
     {
-        case true:
-            StopCoroutine(SprintBatteryLoss()); // Stop the previous coroutine
-            StartCoroutine(SprintBatteryLoss()); // Start sprint battery loss coroutine
-            timerText.color = Color.red; // Change timer text color to red
-            break;
-        case false:
-            StartCoroutine(SprintBatteryLoss()); // Start sprint battery loss coroutine
-            timerText.color = Color.white; // Change timer text color back to white
-            break;
+        switch (PlayerMovement.isSprinting)
+        {
+            case true:
+                StartCoroutine(SprintBatteryLoss()); // Start sprint battery loss coroutine
+                timerText.color = Color.red; // Change timer text color to red
+                break;
+            case false:
+                StopCoroutine(SprintBatteryLoss()); // Stop sprint battery loss coroutine
+                timerText.color = Color.white; // Change timer text color back to white
+                break;
+        }
     }
-}
 
-
-   
-    private IEnumerator Timer()
+    public IEnumerator Timer() // Fixed the return type to IEnumerator
     {
         while (GlobalVariables.currentTime > 0)
         {
@@ -43,7 +39,7 @@ public class TimerBattery : MonoBehaviour
 
     private IEnumerator SprintBatteryLoss()
     {
-        float deductionPerSecond = 0.002f; // Constant deduction rate of 0.001f (I believe the higher values are a bit too fast with how fast it drains, i feel this  and similar ranges to it is more reasonable for a level )
+        float deductionPerSecond = 0.004f; // Constant deduction rate of 0.004f
         float elapsedTime = 0f;
 
         while (PlayerMovement.isSprinting && GlobalVariables.currentTime > 0)
@@ -57,5 +53,4 @@ public class TimerBattery : MonoBehaviour
             yield return null;
         }
     }
-
 }

@@ -26,45 +26,51 @@ public class PlayerCollision : MonoBehaviour
 
     void Update()
     {
-        if (dockActive && !onCooldown)//detects if the device is docked and then begins charging 
+        if (dockActive && !onCooldown) // Detects if the device is docked and then begins charging
         {
-            if (GlobalVariables.docked && !charging)
+            switch (GlobalVariables.docked)
             {
-                GlobalVariables.canMove = false;
-                charging = true;
-
-                StartCoroutine(ChargeForTenSeconds());
+                case true when !charging:
+                    GlobalVariables.canMove = false;
+                    charging = true;
+                    StartCoroutine(ChargeForTenSeconds());
+                    break;
+                default:
+                    break;
             }
         }
     }
 
-IEnumerator ChargeForTenSeconds()
-{
-    float elapsedTime = 0f;
-    float chargePerSecond = 6f; // for every single digit value increase, this will add 10 seconds to the timer
-    bool isCharging = true;
 
-    while (elapsedTime < 10f) // Charge for ten seconds
+    IEnumerator ChargeForTenSeconds()
     {
-        if (!isCharging)
+        float elapsedTime = 0f;
+        float chargePerSecond = 6f; // for every single digit value increase, this will add 10 seconds to the timer
+        bool isCharging = true;
+
+        while (elapsedTime < 10f) // Charge for ten seconds
         {
-            yield return new WaitForEndOfFrame(); // Wait for the end of the frame without charging
+            switch (isCharging)
+            {
+                case false:
+                    yield return new WaitForEndOfFrame(); // Wait for the end of the frame without charging
+                    break;
+                case true:
+                    GlobalVariables.currentTime += chargePerSecond * Time.deltaTime;
+                    Debug.Log("Charging...");
+                    elapsedTime += Time.deltaTime;
+                    yield return null;
+                    break;
+            }
         }
-        else
-        {
-            GlobalVariables.currentTime += chargePerSecond * Time.deltaTime;
-            Debug.Log("Charging...");
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
+
+        charging = false;
+        GlobalVariables.docked = false;
+        GlobalVariables.canMove = true;
+        StartCoroutine(StartCooldown()); // Start the cooldown
+        Debug.Log("Finished charging");
     }
 
-    charging = false;
-    GlobalVariables.docked = false;
-    GlobalVariables.canMove = true;
-    StartCoroutine(StartCooldown()); // Start the cooldown
-    Debug.Log("Finished charging");
-}
 
     void OnTriggerEnter(Collider other)
     {
