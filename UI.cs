@@ -7,12 +7,13 @@ public class UI : MonoBehaviour
 {
     [SerializeField] TMP_Text timerText;
     public Image cleanlinessBar;
-    public Image BatteryBar; 
+    public Image BatteryBar;
 
     void Start()
     {
         SetTextboxText();
-        cleanlinessBar.fillAmount = 1f; // Assuming initial cleanliness is full
+        // Set initial cleanliness to empty
+        UpdateCleanliness(0f);
     }
 
     // Update is called once per frame
@@ -29,14 +30,14 @@ public class UI : MonoBehaviour
         string timeString = string.Format("{0:00}:{1:00}", minutes, seconds);
         UpdateTimerText(timeString);
 
-        //BatteryBar Calculate fill amount based on time
+        // BatteryBar Calculate fill amount based on time
         float fillAmount = displayTime / GlobalVariables.maxTime;
         BatteryBar.fillAmount = fillAmount;
     }
 
     private void UpdateTimerText(string timeString)
     {
-        timerText.text = timeString;    
+        timerText.text = timeString;
     }
 
     public static void UpdateCleanliness(float cleanlinessPercentage)
@@ -44,7 +45,8 @@ public class UI : MonoBehaviour
         UI uiInstance = FindObjectOfType<UI>();
         if (uiInstance != null)
         {
-            uiInstance.cleanlinessBar.fillAmount = cleanlinessPercentage;
+            // Reverse cleanliness bar logic
+            uiInstance.cleanlinessBar.fillAmount = 1f - cleanlinessPercentage;
         }
     }
 
@@ -53,7 +55,8 @@ public class UI : MonoBehaviour
         DirtnessManager dirtnessManager = FindObjectOfType<DirtnessManager>();
         if (dirtnessManager != null)
         {
-            UpdateCleanliness(DirtnessManager.MaxCleanlinessBar); // Assuming initial cleanliness is full
+            // Set initial cleanliness to empty
+            UpdateCleanliness(0f);
         }
     }
 }

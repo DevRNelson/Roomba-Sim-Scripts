@@ -17,6 +17,7 @@ public class DirtnessManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+    
         // Find all dirt and trash in the scene
         dirtList = new List<GameObject>();
         dirtList.AddRange(GameObject.FindGameObjectsWithTag("Dirt"));
@@ -26,8 +27,8 @@ public class DirtnessManager : MonoBehaviour
         trashList.AddRange(GameObject.FindGameObjectsWithTag("Trash"));
 
         // Calculate start dirt and trash value
-        int totalDirtCount = dirtList.Count * dirtValue + trashList.Count * trashValue;
-        MaxCleanlinessBar = totalDirtCount;
+        int totalDirtTrashCount = dirtList.Count * dirtValue + trashList.Count * trashValue;
+        MaxCleanlinessBar = totalDirtTrashCount;
 
         dirtCurrent = MaxCleanlinessBar;
     }
