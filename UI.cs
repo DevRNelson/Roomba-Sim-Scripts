@@ -14,6 +14,9 @@ public class UI : MonoBehaviour
         SetTextboxText();
         // Set initial cleanliness to empty
         UpdateCleanliness(0f);
+        
+        // Set initial cleanliness bar fill amount to 0
+        cleanlinessBar.fillAmount = 0f;
     }
 
     // Update is called once per frame
@@ -45,7 +48,7 @@ public class UI : MonoBehaviour
         UI uiInstance = FindObjectOfType<UI>();
         if (uiInstance != null)
         {
-            // Reverse cleanliness bar logic
+            // Set cleanliness bar fill amount directly without reversing
             uiInstance.cleanlinessBar.fillAmount = 1f - cleanlinessPercentage;
         }
     }
